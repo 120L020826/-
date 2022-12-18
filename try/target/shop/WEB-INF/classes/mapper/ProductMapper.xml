@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.hit.dao.ProductDao">
+
+    <resultMap id="Pr" type="Product">
+        <id property="pId" column="p_id"/>
+        <result property="pName" column="p_name"/>
+        <result property="marketPrice" column="market_price"/>
+        <result property="shopPrice" column="shop_price"/>
+        <result property="image" column="image"/>
+        <result property="pDesc" column="p_desc"/>
+        <result property="isHot" column="is_hot"/>
+        <result property="pDate" column="p_date"/>
+        <result property="csId" column="cs_id"/>
+        <result property="marketOwner" column="market_owner"/>
+    </resultMap>
+
+    <select id="getProductById" parameterType="Integer" resultMap="Pr">
+        select * from product where p_id=#{pId}
+    </select>
+</mapper>
