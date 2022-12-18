@@ -14,7 +14,7 @@
 
 <div class="sign-logo w1200">
     <h1 class="zl-h11"><a href="" title="小杰购物"><img
-            src="${pageContext.request.contextPath}/images/xiaojie.png" alt=""/></a></h1>
+            src="${pageContext.request.contextPath}/images/oxiaojie.png" alt=""/></a></h1>
 </div>
 
 <div class="sign-con w1200">

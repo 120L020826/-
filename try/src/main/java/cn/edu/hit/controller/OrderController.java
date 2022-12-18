@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
@@ -97,6 +96,24 @@ public class OrderController {
 
     }
 
+    // 订单单项去付款
+    // 更新状态
+    @RequestMapping("/doPay2")
+    public String doPay2(Order order , Model model){
+        User user = (User) session.getAttribute("user");
+        if(user == null){
+            return  "login";
+        }
+        Integer i = service.updateState(order);// 1 √
+
+        model.addAttribute("oId",order.getoId());
+        if(i == 0){
+            return "pay";
+        }else{
+            return "PayError";
+        }
+
+    }
     // 我的订单
 
     @RequestMapping("/toMyOrder")
@@ -122,26 +139,7 @@ public class OrderController {
     }
 
 
-    // 订单单项去付款
-    // 更新状态
-    @RequestMapping("/doPay2")
-    public String doPay2(Order order , Model model){
-        User user = (User) session.getAttribute("user");
-        if(user == null){
-            return  "login";
-        }
 
-        Integer i = service.updateState(order);// 1 √
-
-        model.addAttribute("oId",order.getoId());
-
-        if(i == i){
-            return "PaySuccess";
-        }else{
-            return "PayError";
-        }
-
-    }
 
     // 删除订单
     @RequestMapping("/updatastate")
@@ -158,30 +156,28 @@ public class OrderController {
     // 确认收货
     @RequestMapping("toconfirmReceipt")
 
-    public ModelAndView toconfirmReceipt(Order order){
+    public String toconfirmReceipt(Order order, Model model){
         OrderExt orderExt = service.selAll(order.getoId());
+        User user = service.getUser(order.getuId());
 
-        ModelAndView mv = new ModelAndView();
+        model.addAttribute("user",user);
+        model.addAttribute("orderExt",orderExt);
 
-        mv.setViewName("confirmReceipt");
-        mv.addObject("orderExt",orderExt);
-
-        return mv;
+        return "confirmReceipt";
 
     }
 
     @RequestMapping("/topaySuccess")
     public String topaySuccess(Integer oId , Model model){
-        
+        // 支付成功  订单状态
+        service.upId(oId);
+
         // 查询商品信息
         OrderExt orderExt = service.selAll(oId);
 
         model.addAttribute("orderExt", orderExt);
 
-        // 支付成功  订单状态
-        service.upId(oId);
-
-        return "paySuccess";
+        return "SuccessPay";
 
     }
 }

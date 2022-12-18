@@ -81,7 +81,7 @@
         //验证手机号
         $("#phone").change(function (){
             //正则
-            var phontPatter=/^1[3,5,7,8][\d]{9}$/
+            var phontPatter=/^1[3,5,7,8][\w]{9}$/
             //获取手机号
             var phone = $(this).val();
             if(phontPatter.test(phone)){
@@ -94,6 +94,21 @@
 
         })
 
+        //验证银行卡号
+        $("#bankId").change(function (){
+            //正则
+            var bankPatter=/^[4,6][\w]{4}$/
+            //获取手机号
+            var banKId = $(this).val();
+            if(bankPatter.test(banKId)){
+                $("#bankIdMsg").attr("class","dui")
+                $("#bankId").text("银行卡号存在")
+            }else {
+                $("#bankIdMsg").attr("class","cuo")
+                $("#bankId").text("银行卡号不存在")
+            }
+
+        })
         //阻止提交
         $('form').submit(function (){
             var flag=true
@@ -159,7 +174,7 @@
 
 
             <c:if test="${empty user}">
-                Hi!您好，欢迎来到小杰购，请登录 <a href="http://localhost:8080/shop/user/tologin">【登录】</a>
+                Hi!您好，欢迎来到小杰购物，请登录 <a href="http://localhost:8080/shop/user/tologin">【登录】</a>
             </c:if>
 
 
@@ -200,7 +215,11 @@
             <input type="text" placeholder="请输入手机/邮箱验证码" name="phone" id="phone" required/>
             <span class="" id="phoneMsg" name="msg">手机号为11位数字</span>
         </div>
-
+        <div class="psw psw2">
+            <p class="psw-p1">银行卡号</p>
+            <input type="text" placeholder="请输入银行号码" name="bankId" id="bankId" required/>
+            <span class="" id="bankIdMsg" name="msg">银行卡号为5位数字</span>
+        </div>
         <div class="psw psw3">
             <p class="psw-p1">验证码</p>
             <input type="text" placeholder="请输入验证码" name="validate" id="validate"/>
@@ -221,6 +240,7 @@
         <p class="sign-in">已有账号？请<a href="#">登录</a></p>
     </div>
     </form>
+
 <!--底部一块-->
 <%@ include file="common/bottom.jsp" %>
     

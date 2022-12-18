@@ -28,10 +28,18 @@
         <p></p>
         <div class="dt-ifm-box4" align="center">
             <a href="${pageContext.request.contextPath}/index/toindex"  style="font-size: 30px; background-color:#007bff;">继续逛逛</a>
-            <a href="${pageContext.request.contextPath}/order/topaySuccess" onclick=alert("订单号：${oId.intValue()}\n"+"请确认是否支付！")  style="font-size: 30px;background-color:rgba(255,72,0,0.94);">立即支付</a>
+            <a href="${pageContext.request.contextPath}/order/topaySuccess" onclick=popTwo()  style="font-size: 30px;background-color:rgba(255,72,0,0.94);">立即支付</a>
         </div>
     </p>
-
+    <script>
+        function popTwo(){
+            if(confirm("订单号：${oId.intValue()}\n"+"请确认是否支付！")){
+                "确认";
+            }else{
+                "退出" ;
+            }
+        }
+    </script>
 <!--底部一块-->
 <%@ include file="common/bottom.jsp" %>
 

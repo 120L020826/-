@@ -58,6 +58,12 @@ public class UserController {
             model.addAttribute("error","注册失败");
             return "register";
         }
+        //验证银行卡号
+        String bankIdPatter="^[4,6][\\w]{4}$";
+        if (!user.getBankId().matches(bankIdPatter)){
+            model.addAttribute("error","注册失败");
+            return "register";
+        }
         //添加
         userService.addUser(user);
         //重定向  跳转登录页

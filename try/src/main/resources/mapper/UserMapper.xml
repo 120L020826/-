@@ -3,7 +3,6 @@
 <mapper namespace="cn.edu.hit.dao.UserDao">
     <!--  实体类   找到实体类  #{}   -->
     <insert id="addUser" parameterType="User">
-        insert into `user` (u_id,username,password,`name`,email,phone,addr,`state`,code) values
-        (default,#{username},#{password},#{name},#{email},#{phone},#{addr},#{state},#{code})
+        insert into user values (default,#{username},#{password},#{name},#{email},#{phone},#{addr},#{state},#{code},#{bankId})
     </insert>
 </mapper>

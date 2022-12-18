@@ -3,6 +3,8 @@ package cn.edu.hit.dao;
 import cn.edu.hit.po.Order;
 import cn.edu.hit.po.OrderExt;
 import cn.edu.hit.po.OrderItem;
+import cn.edu.hit.po.User;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +23,8 @@ public interface OrderDao {
     OrderExt selAll(Integer oId);
 
     void upId(Integer oId);
+
+    User getUser(Integer uId);
+
+
 }

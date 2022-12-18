@@ -109,6 +109,11 @@ public class OrderServiceImpl implements OrderService {
     public void upId(Integer oId) {
         dao.upId(oId);
     }
+
+    @Override
+    public User getUser(Integer uId){
+        return dao.getUser(uId);
+    }
 }
 
 

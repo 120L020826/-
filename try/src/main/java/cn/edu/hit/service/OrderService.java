@@ -17,4 +17,6 @@ public interface OrderService {
     OrderExt selAll(Integer oId);
 
     void upId(Integer oId);
+
+    User getUser(Integer uId);
 }

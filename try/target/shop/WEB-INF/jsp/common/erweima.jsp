@@ -9,7 +9,7 @@
 <div class="logo-search w1200">
     <div class="logo-box f-l">
         <div class="logo f-l">
-            <a href="${pageContext.request.contextPath}/index.jsp" title="logo"><img src="${pageContext.request.contextPath}/images/xiaojie.png"/></a>
+            <a href="${pageContext.request.contextPath}/index.jsp" title="logo"><img src="${pageContext.request.contextPath}/images/oxiaojie.png"/></a>
         </div>
         <div class="shangjia f-l">
             <a href="JavaScript:;" class="shangjia-a1">[ 切换城市 ]</a>

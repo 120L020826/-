@@ -10,11 +10,12 @@ public class User {
     private String addr;
     private Integer state;
     private String code;
+    private String bankId;
 
     public User() {
     }
 
-    public User(Integer uId, String username, String password, String name, String email, String phone, String addr, Integer state, String code) {
+    public User(Integer uId, String username, String password, String name, String email, String phone, String addr, Integer state, String code, String bankId) {
         this.uId = uId;
         this.username = username;
         this.password = password;
@@ -24,78 +25,87 @@ public class User {
         this.addr = addr;
         this.state = state;
         this.code = code;
+        this.bankId = bankId;
     }
 
     public Integer getuId() {
         return uId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getAddr() {
-        return addr;
-    }
-
-    public Integer getState() {
-        return state;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
     public void setuId(Integer uId) {
         this.uId = uId;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
     }
 
+    public String getAddr() {
+        return addr;
+    }
+
     public void setAddr(String addr) {
         this.addr = addr;
+    }
+
+    public Integer getState() {
+        return state;
     }
 
     public void setState(Integer state) {
         this.state = state;
     }
 
+    public String getCode() {
+        return code;
+    }
+
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getBankId() {
+        return bankId;
+    }
+
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
     }
 
     @Override
@@ -110,8 +120,7 @@ public class User {
                 ", addr='" + addr + '\'' +
                 ", state=" + state +
                 ", code='" + code + '\'' +
+                ", bankId='" + bankId + '\'' +
                 '}';
     }
-
-
 }

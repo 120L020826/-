@@ -418,7 +418,7 @@
                 <p>订单号：${orderExt.oId}</p>
             <%-- 遍历订单--%>
                     <c:forEach items="${orderExt.list}" var="list">
-                        <p>付款方：${orderExt.uId}   收款方：${list.product.marketOwner} 金额：${list.subTotal}</p>
+                        <p>商品单号：${list.itemId}  付款方ID： ${user.uId}   付款方卡号：${user.bankId}      收款方卡号：${list.product.marketOwner}     金额：${list.subTotal}</p>
                     </c:forEach>
                 <p>总金额：${orderExt.total}</p>
 
