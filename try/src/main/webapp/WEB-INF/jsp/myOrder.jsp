@@ -466,12 +466,12 @@
                         <c:choose>
                             <c:when test="${orderExt.state==0}">
                                 <p>
-                                    <a  href="${pageContext.request.contextPath}/order/doPay2", onclick=popTwo()>去付款</a>
+                                    <a  href="${pageContext.request.contextPath}/order/toconfirmReceipt?oId=${orderExt.oId}&state=1", onclick=popTwo()>去付款</a>
                                     <a  href="${pageContext.request.contextPath}/order/updatastate?oId=${orderExt.oId}&state=-1" name="delOrder">删除</a>
                                 </p>
                                 <script>
                                     function popTwo(){
-                                        const number = ${orderExt.oId.intValue()}+1;
+                                        const number = ${orderExt.oId.intValue()};
                                         if(confirm("订单号："+ number +"\n"+"请确认是否支付！")){
                                             "确认";
                                         }else{
@@ -484,7 +484,8 @@
                                 <p onclick="alert('已提示卖家')">提醒发货</p>
                             </c:when>
                             <c:when test="${orderExt.state==2}">
-                                <p><a href="${pageContext.request.contextPath}/order/toconfirmReceipt?oId=${orderExt.oId}">确认收货</a></p>
+                                <p><a href="${pageContext.request.contextPath}/order/toconfirmReceipt?oId=${orderExt.oId}&state=2">确认收货</a></p>
+                                <p><a  href="${pageContext.request.contextPath}/order/updatastate?oId=${orderExt.oId}&state=-1" name="delOrder">删除</a></p>
                             </c:when>
                             <c:when test="${orderExt.state==3}">
                                 <p><a  href="${pageContext.request.contextPath}/order/updatastate?oId=${orderExt.oId}&state=-1" name="delOrder">删除</a></p>

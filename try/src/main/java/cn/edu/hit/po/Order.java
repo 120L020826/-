@@ -14,7 +14,6 @@ public class Order {
     private String addr;
     private Integer uId;
 
-
     public Integer getoId() {
         return oId;
     }

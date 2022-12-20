@@ -47,4 +47,15 @@ public class OrderItem {
     public void setoId(Integer oId) {
         this.oId = oId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "itemId=" + itemId +
+                ", count=" + count +
+                ", subTotal=" + subTotal +
+                ", pId=" + pId +
+                ", oId=" + oId +
+                '}';
+    }
 }

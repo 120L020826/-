@@ -11,4 +11,5 @@ public class OrderItemExt extends OrderItem{
     public void setProduct(Product product) {
         this.product = product;
     }
+
 }

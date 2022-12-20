@@ -429,10 +429,10 @@
                 <h3>确认收货</h3>
             </div>
             <div class="odr-sh">
-                <P class="reminder">温馨提示：请收到货后，再确认收货！否则您可能钱货两空！</P>
+                <P class="reminder">温馨提示：请确认信息后，再确认付款！否则您可能钱货两空！</P>
                 <div class="zfb">
 
-                    <button class="zfb-btn" onclick="window.location.href='${pageContext.request.contextPath}/order/updatastate?oId=${orderExt.oId}&state=3'">确认</button>
+                    <button class="zfb-btn" onclick="window.location.href='${pageContext.request.contextPath}/order/paytoBank?oId=${orderExt.oId}'">确认</button>
                 </div>
             </div>
         </div>

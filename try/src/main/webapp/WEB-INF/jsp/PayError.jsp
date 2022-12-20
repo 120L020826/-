@@ -18,9 +18,12 @@
 
 <!--logo search erweima-->
 <%@ include file="common/erweima.jsp" %>
+<p>
+    <img style="margin: 0 auto" src="${pageContext.request.contextPath}/images/payerror.png">
+    <h2 style="font-size: 30px; text-align: center">${error}</h2>
+</p>
 
 
-<h2 style="font-size: 30px; text-align: center">操作失败</h2>
 
 <!--底部一块-->
 <%@ include file="common/bottom.jsp" %>

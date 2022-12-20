@@ -136,9 +136,8 @@ public class UserController {
         }
 
     }
-//    @RequestMapping("/test")
-//    public String test(){
-//        userService.test();
-//        return "123123123";
-//    }
+    @RequestMapping("/test")
+    public String test(){
+        return "123123123";
+    }
 }
