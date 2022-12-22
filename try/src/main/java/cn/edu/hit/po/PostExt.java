@@ -9,16 +9,13 @@ public class PostExt{
     public Post order;
     @JSONField(ordinal = 4)
     private String signature;
-    @JSONField(ordinal = 5)
-    private String cert;
 
     public PostExt() {
     }
 
-    public PostExt(Post order, String signature, String cert) {
+    public PostExt(Post order, String signature) {
         this.order = order;
         this.signature = signature;
-        this.cert = cert;
     }
 
     public Post getOrder() {
@@ -37,11 +34,4 @@ public class PostExt{
         this.signature = signature;
     }
 
-    public String getCert() {
-        return cert;
-    }
-
-    public void setCert(String cert) {
-        this.cert = cert;
-    }
 }

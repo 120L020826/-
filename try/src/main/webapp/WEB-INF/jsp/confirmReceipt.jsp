@@ -426,19 +426,170 @@
         </div>
         <div class="confirmation">
             <div class="in-tit">
-                <h3>确认收货</h3>
+                <h3>确认付款</h3>
             </div>
             <div class="odr-sh">
-                <P class="reminder">温馨提示：请确认信息后，再确认付款！否则您可能钱货两空！</P>
-                <div class="zfb">
 
-                    <button class="zfb-btn" onclick="window.location.href='${pageContext.request.contextPath}/order/paytoBank?oId=${orderExt.oId}'">确认</button>
+                <div class="psw">
+                    <p class="psw-p1">私钥</p>
+                    <input type="file" id="privkey" onchange="readPrivkey(this)" />
+                </div>
+
+                <div class="psw">
+                    <p class="psw-p1">私钥密码</p>
+                    <input type="text" placeholder="密码" id="password" />
+                </div>
+                <p class="reminder">温馨提示：私钥仅用于本地浏览器中对付款信息签名，不会发送到服务端。请确认信息后，再确认付款！否则您可能钱货两空！</p>
+                <div class="zfb">
+                    <button class="zfb-btn" onclick="submit_order()">确认付款</button>
                 </div>
             </div>
         </div>
     </div>
+<%-- 懒得写fetch了，下方隐藏的form用于向后端提交信息 --%>
+    <div style="display: none">
+        <form id="pay_form" action="${pageContext.request.contextPath}/order/paytoBank" method="post">
+            <input type="hidden" name="oId" id="oId" />
+            <input type="hidden" name="timestamp" id="timestamp" />
+            <input type="hidden" name="signature" id="signature" />
+        </form>
+    </div>
     <div style="clear:both;"></div>
 </div>
+
+<script>
+    const str2ab = (str) => {
+        const buf = new ArrayBuffer(str.length);
+        const bufView = new Uint8Array(buf);
+        for (let i = 0, strLen = str.length; i < strLen; i++) {
+            bufView[i] = str.charCodeAt(i);
+        }
+        return buf;
+    }
+
+    const ab2str = (buf) => {
+        return String.fromCharCode.apply(null, Array.from(new Uint8Array(buf)));
+    }
+
+    const xorBuffer = (a, key) => {
+        const a8 = new Uint8Array(a)
+        const key8 = new Uint8Array(key)
+        for (let i = 0; i < a.byteLength; i += 1)
+            a8[i] ^= key8[i]
+    }
+
+    const getXorKey = async (password, length) => {
+        const baseKey = await crypto.subtle.importKey(
+            "raw", (new TextEncoder()).encode(password),
+            "PBKDF2", false, ["deriveBits"]
+        )
+        // length for PBKDF2 key derivation must be a multiple of 8 bits
+        const key = await window.crypto.subtle.deriveBits(
+            {
+                name: "PBKDF2",
+                salt: str2ab("\x8doSl\x13h\x15B2\x16\x8d.\xac-O\x96"),
+                iterations: 1926,
+                hash: "SHA-256",
+            }, baseKey, length * 8
+        );
+        return key.slice(0, length)
+    }
+
+    const importPEMPrivKey = async (privkey, password) => {
+        privkey = privkey.trim()
+        const pemHeader = '-----BEGIN PRIVATE KEY-----\n';
+        const pemFooter = '\n-----END PRIVATE KEY-----';
+
+        // fetch the part of the PEM string between header and footer
+        const pemContents = privkey.substring(pemHeader.length, privkey.length - pemFooter.length);
+        // base64 decode the string to get the binary data
+        const binaryDerString = atob(pemContents);
+        // convert from a binary string to an ArrayBuffer
+        const binaryDer = str2ab(binaryDerString);
+        // decrypt using password
+        xorBuffer(binaryDer, await getXorKey(password, binaryDer.byteLength))
+
+        return crypto.subtle.importKey(
+            'pkcs8', binaryDer, {
+                name: 'ECDSA',
+                namedCurve: 'P-256',
+            }, true, ['sign']
+        );
+    }
+
+    const getPubKey = async (privKey) => {
+        const jwkPrivate = await crypto.subtle.exportKey('jwk', privKey);
+        delete jwkPrivate.d;
+        jwkPrivate.key_ops = ['verify'];
+        return crypto.subtle.importKey(
+            'jwk', jwkPrivate, {
+                name: 'ECDSA',
+                namedCurve: 'P-256'
+            }, true, ['verify']
+        );
+    }
+
+    const wrapPEM = (raw) => {
+        return raw.replace(/(.{64})/g, "$1\n")
+    }
+
+    const exportPEMPubKey = async (pubKey) => {
+        const exported = await crypto.subtle.exportKey('spki', pubKey);
+        const exportedAsBase64 = btoa(ab2str(exported));
+        return "-----BEGIN PUBLIC KEY-----\n" + wrapPEM(exportedAsBase64) + "\n-----END PUBLIC KEY-----";
+    }
+
+    const exportPEMPrivKey = async (privKey, password) => {
+        const binaryDer = await crypto.subtle.exportKey("pkcs8", privKey)
+        xorBuffer(binaryDer, await getXorKey(password, binaryDer.byteLength))
+        const binaryDerString = btoa(ab2str(binaryDer))
+        return "-----BEGIN PRIVATE KEY-----\n" + wrapPEM(binaryDerString) + "\n-----END PRIVATE KEY-----"
+    }
+
+    const generateSignature = async (privkey, data) => {
+        const signature = await crypto.subtle.sign(
+            {
+                name: 'ECDSA',
+                hash: { name: 'SHA-256' },
+            }, privkey, str2ab(data)
+        );
+        return btoa(ab2str(signature));
+    }
+
+    const generateKeyPair = async () => (
+        crypto.subtle.generateKey(
+            { name: 'ECDSA', namedCurve: 'P-256' },
+            true, ["sign"]
+        )
+    )
+    let privkey = ""
+    const readPrivkey = async (input) => {
+        const reader = new FileReader()
+        reader.readAsText(input.files[0])
+        reader.onload = async (e) => {
+            privkey = e.target.result
+        }
+        console.dir(input.files[0])
+    }
+    const submit_order = async () => {
+        const password = document.getElementById("password").value
+        const timestamp = Date.now();
+        const raw_msg = "${user.bankId}||${orderExt.list[0].getProduct().getMarketOwner()}||" +
+            "${orderExt.getTotal()}||${orderExt.getList().get(0).toString()}||" + timestamp.toString()
+        console.dir(raw_msg)
+        const sig = await generateSignature(
+            await importPEMPrivKey(privkey, password),
+            // sign(from_id||to_id||amount||comment||timestamp)
+            raw_msg
+        )
+        console.dir(privkey)
+        console.dir(sig)
+        document.getElementById("signature").value = sig
+        document.getElementById("timestamp").value = timestamp
+        document.getElementById("oId").value = "${orderExt.oId}"
+        document.getElementById("pay_form").submit()
+    }
+</script>
 
 <!-- 底部一块-->
 <%@ include file="common/bottom.jsp" %>

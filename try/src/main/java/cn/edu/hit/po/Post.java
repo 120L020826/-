@@ -13,11 +13,15 @@ public class Post {
     @JSONField(ordinal = 4)
     private String comment;
 
-    public Post(String from_id, String to_id, String amount, String comment) {
+    @JSONField(ordinal = 5)
+    private Long timestamp;
+
+    public Post(String from_id, String to_id, String amount, String comment, Long timestamp) {
         this.from_id = from_id;
         this.to_id = to_id;
         this.amount = amount;
         this.comment = comment;
+        this.timestamp = timestamp;
     }
 
     public String getFrom_id() {
@@ -52,6 +56,14 @@ public class Post {
         this.comment = comment;
     }
 
+    public Long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Long timestamp) {
+        this.timestamp = timestamp;
+    }
+
     @Override
     public String toString() {
         return "Post{" +
@@ -59,6 +71,7 @@ public class Post {
                 ", to_id='" + to_id + '\'' +
                 ", amount='" + amount + '\'' +
                 ", comment='" + comment + '\'' +
+                ", timestamp='" + timestamp + '\'' +
                 '}';
     }
 }
