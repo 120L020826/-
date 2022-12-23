@@ -174,7 +174,7 @@
 
 
             <c:if test="${empty user}">
-                Hi!您好，欢迎来到小杰购物，请登录 <a href="http://localhost:8080/shop/user/tologin">【登录】</a>
+                Hi!您好，欢迎来到小杰购物，请登录 <a href="${pageContext.request.contextPath}/user/tologin">【登录】</a>
             </c:if>
 
 

@@ -31,7 +31,7 @@
         <ul class="pay-dz">
             <table style="margin:10px;">
                 <tr style="height: 30px">
-                    <td>用户名</td>
+                    <td>收货人</td>
                     <td style="height: 30px"><input type="text" name="name" value="${user.name}"
                                                     style="height: 30px"></td>
                 </tr>
@@ -41,7 +41,7 @@
                                                     style="height: 30px"></td>
                 </tr>
                 <tr>
-                    <td>地址</td>
+                    <td>收货地址</td>
                     <td style="height: 30px"><input type="text" name="addr" value="${user.addr}"
                                                     style="height: 30px;width: 180px"></td>
                 </tr>
